@@ -61,21 +61,21 @@ const customTheme = EditorView.theme({
     fontSize: "13px !important",
   },
   ".cm-gutters": {
-    backgroundColor: "rgba(5, 5, 7, 0.4) !important",
+    backgroundColor: "rgba(5, 5, 8, 0.4) !important",
     color: "#64748b !important",
-    borderRight: "1px solid rgba(245, 158, 11, 0.15) !important",
+    borderRight: "1px solid rgba(216, 180, 254, 0.15) !important",
   },
   ".cm-activeLine": {
-    backgroundColor: "rgba(245, 158, 11, 0.02) !important",
+    backgroundColor: "rgba(216, 180, 254, 0.02) !important",
   },
   ".cm-activeLineGutter": {
-    backgroundColor: "rgba(245, 158, 11, 0.06) !important",
-    color: "#f59e0b !important",
+    backgroundColor: "rgba(216, 180, 254, 0.06) !important",
+    color: "#d8b4fe !important",
   },
 });
 
 const customHighlightStyle = HighlightStyle.define([
-  { tag: t.keyword, color: '#f59e0b', backgroundColor: 'rgba(245, 158, 11, 0.12)', fontWeight: 'bold' },
+  { tag: t.keyword, color: '#c084fc', backgroundColor: 'rgba(192, 132, 252, 0.12)', fontWeight: 'bold' },
   { tag: [t.name, t.deleted, t.character, t.propertyName, t.macroName], color: '#f8fafc' },
   { tag: [t.variableName, t.labelName], color: '#f8fafc' },
   { tag: [t.typeName, t.className, t.number, t.changed], color: '#94a3b8' },
@@ -237,12 +237,12 @@ export const Editor: React.FC = () => {
     return (
       <div 
         aria-label="Core Viewport Welcome Deck"
-        className="w-full h-full flex flex-col bg-white/[0.01] text-slate-300 font-sans p-5 overflow-y-auto select-none scrollbar-thin"
+        className="w-full h-full flex flex-col bg-white/[0.01] text-slate-350 font-sans p-5 overflow-y-auto select-none scrollbar-thin"
       >
         {/* Upper Metadata Telemetry Header Row */}
         <div className="flex items-center justify-between pb-3 border-b border-white/[0.04]">
-          <div className="text-xs font-semibold text-slate-400 tracking-wider uppercase font-sans">
-            // Core Viewport // System Ingestion Deck
+          <div className="text-xs font-semibold text-[#d8b4fe]/80 tracking-widest uppercase font-sans">
+            Core Viewport
           </div>
           <div className="flex items-center gap-2">
             <span className="text-[10px] text-slate-500 font-mono tracking-tight uppercase">
@@ -259,7 +259,7 @@ export const Editor: React.FC = () => {
             <img 
               src={logoSrc} 
               alt="Scholastic Emblem Logo" 
-              className="w-72 h-72 object-contain rounded-full border border-amber-500/10 p-2"
+              className="w-72 h-72 object-contain rounded-full border border-[#d8b4fe]/10 p-2"
               onError={() => setLogoSrc('/logo.png')}
             />
           </div>
@@ -275,49 +275,49 @@ export const Editor: React.FC = () => {
             </div>
 
             {/* Typography shortcuts & Telemetry grid card */}
-            <div className="bg-[#101018]/45 backdrop-blur-xl rounded-2xl border border-white/[0.03] p-5 shadow-2xl space-y-4">
+            <div className="bg-[#161626]/40 backdrop-blur-xl rounded-2xl border border-white/[0.03] p-5 shadow-2xl space-y-4">
               <div className="flex items-center justify-between border-b border-white/[0.04] pb-3">
-                <span className="text-[9px] font-mono tracking-widest text-[#f59e0b] font-bold uppercase">
-                  // COMMAND COMPILER SYSTEMS
+                <span className="text-[9px] font-semibold tracking-widest text-[#d8b4fe]/80 font-sans uppercase">
+                  Command Systems
                 </span>
                 <span className="text-[9px] text-slate-500 font-mono">0x4F0B_NOMINAL</span>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 {/* Keyboard shortcuts list */}
-                <div className="space-y-2">
-                  <div className="text-xs font-semibold text-slate-300 font-sans tracking-wide">
+                <div className="space-y-2 font-sans">
+                  <div className="text-xs font-semibold text-slate-300 tracking-wide">
                     Keyboard Shortcuts
                   </div>
-                  <div className="space-y-1.5 font-mono text-[10px] text-slate-400">
+                  <div className="space-y-1.5 text-[10px] text-slate-400">
                     <div className="flex items-center justify-between">
                       <span>Telemetry Save</span>
-                      <span className="bg-white/5 px-1 py-0.5 rounded border border-white/10 text-slate-200">Ctrl + S</span>
+                      <span className="bg-white/5 px-1.5 py-0.5 rounded border border-white/10 text-slate-205 font-mono">Ctrl + S</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span>Incremental Undo</span>
-                      <span className="bg-white/5 px-1 py-0.5 rounded border border-white/10 text-slate-200">Ctrl + Z</span>
+                      <span className="bg-white/5 px-1.5 py-0.5 rounded border border-white/10 text-slate-205 font-mono">Ctrl + Z</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span>Buffer Search</span>
-                      <span className="bg-white/5 px-1 py-0.5 rounded border border-white/10 text-slate-200">Ctrl + F</span>
+                      <span className="bg-white/5 px-1.5 py-0.5 rounded border border-white/10 text-slate-205 font-mono">Ctrl + F</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Telemetry states */}
-                <div className="space-y-2 border-l border-white/[0.04] pl-4">
-                  <div className="text-xs font-semibold text-slate-300 font-sans tracking-wide">
+                <div className="space-y-2 border-l border-white/[0.04] pl-4 font-sans">
+                  <div className="text-xs font-semibold text-slate-300 tracking-wide">
                     Telemetry Indicators
                   </div>
-                  <div className="space-y-1.5 font-mono text-[10px] text-slate-400">
+                  <div className="space-y-1.5 text-[10px] text-slate-400">
                     <div className="flex items-center justify-between">
                       <span>Circular Buffer</span>
-                      <span className="text-emerald-500 font-bold">NOMINAL</span>
+                      <span className="text-emerald-500 font-bold font-mono">NOMINAL</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span>AST Syntax Guard</span>
-                      <span className="text-amber-500 font-bold">ZERO_LOOP</span>
+                      <span className="text-amber-500 font-bold font-mono">ZERO_LOOP</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span>Ingestion Engine</span>
@@ -328,11 +328,11 @@ export const Editor: React.FC = () => {
               </div>
 
               {/* Syllabus Milestones */}
-              <div className="border-t border-white/[0.04] pt-3.5 space-y-2">
-                <div className="text-xs font-semibold text-slate-300 font-sans tracking-wide">
+              <div className="border-t border-white/[0.04] pt-3.5 space-y-2 font-sans">
+                <div className="text-xs font-semibold text-slate-300 tracking-wide">
                   Upcoming Syllabus Milestones
                 </div>
-                <div className="grid grid-cols-3 gap-2 font-sans text-[10px]">
+                <div className="grid grid-cols-3 gap-2 text-[10px]">
                   <div className="bg-white/[0.01] border border-white/[0.03] p-2 rounded-xl text-center">
                     <span className="block text-slate-500 uppercase font-mono text-[8px] tracking-tight">Week 01</span>
                     <span className="text-slate-300 font-medium truncate block">Recursive Logic</span>
@@ -348,7 +348,7 @@ export const Editor: React.FC = () => {
                 </div>
               </div>
 
-              <div className="text-center text-[10px] text-slate-500 font-mono tracking-tight pt-1 border-t border-white/[0.02]">
+              <div className="text-center text-[10px] text-slate-500 font-sans tracking-wide pt-2 border-t border-white/[0.02]">
                 Select a file from the explorer sidebar to begin coding.
               </div>
             </div>
@@ -367,8 +367,8 @@ export const Editor: React.FC = () => {
     >
       {/* Upper Metadata Telemetry Header Row */}
       <div className="flex items-center justify-between px-4 py-2 bg-neutral-950/40 border-b border-white/[0.04]">
-        <div className="text-xs font-semibold text-slate-300 tracking-wider uppercase font-sans">
-          // Core Viewport // Active Workspace
+        <div className="text-xs font-semibold text-[#d8b4fe]/80 tracking-widest uppercase font-sans">
+          Core Viewport
         </div>
         <div className="flex items-center gap-2">
           <span className="text-[10px] text-slate-400 font-mono tracking-tight uppercase">

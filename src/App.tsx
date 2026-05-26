@@ -19,7 +19,7 @@ const App: React.FC = () => {
   return (
     <div 
       aria-label="Calyx Scholar Workspace HUD"
-      className="w-screen h-screen min-h-screen max-h-screen overflow-hidden bg-[#0a0a12] p-4 gap-4 grid grid-cols-[280px_1fr_380px] grid-rows-[1fr_240px] font-sans antialiased text-slate-200 select-none"
+      className="w-screen h-screen min-h-screen max-h-screen overflow-hidden bg-transparent p-4 gap-4 grid grid-cols-[280px_1fr_380px] grid-rows-[1fr_240px] font-sans antialiased text-slate-200 select-none"
     >
       {/* Column 1: Workspace Explorer and Industrial Telemetry (Spans both rows) */}
       <WorkspaceExplorer />

@@ -19,10 +19,10 @@ export const Terminal: React.FC = () => {
     const term = new Xterm({
       cursorBlink: true,
       theme: {
-        background: 'rgba(0, 0, 0, 0)', // High-fidelity fully transparent terminal canvas
+        background: 'rgba(0, 0, 0, 0)', // Transparent canvas for silver-amethyst glass plates
         foreground: '#94a3b8',
-        cursor: '#f59e0b',
-        selectionBackground: 'rgba(245, 158, 11, 0.3)',
+        cursor: '#d8b4fe',
+        selectionBackground: 'rgba(216, 180, 254, 0.3)',
       },
       fontFamily: "'JetBrains Mono', monospace",
       fontSize: 12,
@@ -45,7 +45,6 @@ export const Terminal: React.FC = () => {
     let mockLogInterval: ReturnType<typeof setInterval> | null = null;
 
     if (isTauri) {
-      // Dynamic import to prevent browser environment crash on native bindings loading
       import('@tauri-apps/api/core').then(({ invoke }) => {
         import('@tauri-apps/api/event').then(({ listen }) => {
           invoke('spawn_pty').then(() => {
@@ -82,7 +81,7 @@ export const Terminal: React.FC = () => {
       });
     } else {
       // Standalone Browser Sandbox Simulation
-      term.writeln('\x1b[1;33m// CALYX SCHOLAR TERMINAL SIMULATION ENGINE //\x1b[0m');
+      term.writeln('\x1b[1;35m// CALYX SCHOLAR TERMINAL SIMULATION ENGINE //\x1b[0m');
       term.writeln('\x1b[90m[IPC_BRIDGE]: Isolated browser sandbox detected. Spawning mock PTY session...\x1b[0m');
       term.writeln('');
       term.write('calyx-scholar@browser:~$ ');
@@ -96,13 +95,13 @@ export const Terminal: React.FC = () => {
           inputBuffer = '';
 
           if (cmd === 'help') {
-            term.writeln('\x1b[1;33m┌────────────────────────────────────────────────────────────┐\x1b[0m');
-            term.writeln('\x1b[1;33m│ CALYX SCHOLAR TELEMETRY SYSTEM OVERVIEW - BROWSER VIRTUAL  │\x1b[0m');
-            term.writeln('\x1b[1;33m├────────────────────────────────────────────────────────────┤\x1b[0m');
+            term.writeln('\x1b[1;35m┌────────────────────────────────────────────────────────────┐\x1b[0m');
+            term.writeln('\x1b[1;35m│ CALYX SCHOLAR TELEMETRY SYSTEM OVERVIEW - BROWSER VIRTUAL  │\x1b[0m');
+            term.writeln('\x1b[1;35m├────────────────────────────────────────────────────────────┤\x1b[0m');
             term.writeln('│ STATUS:    \x1b[32mONLINE (SANDBOX SIMULATION ACTIVE)\x1b[0m              │');
             term.writeln('│ PORT:      1420 // SYLLABUS: CS50X WEEK 1 ACTIVE           │');
             term.writeln('│ TELEMETRY: 256-BYTE GUARDRAIL CIRCULAR BUFFER NOMINAL      │');
-            term.writeln('\x1b[1;33m└────────────────────────────────────────────────────────────┘\x1b[0m');
+            term.writeln('\x1b[1;35m└────────────────────────────────────────────────────────────┘\x1b[0m');
           } else if (cmd === 'clear') {
             term.clear();
           } else if (cmd === 'status') {
@@ -134,7 +133,6 @@ export const Terminal: React.FC = () => {
       let logIndex = 0;
 
       mockLogInterval = setInterval(() => {
-        // Only write logs occasionally to maintain density without blocking typing
         if (inputBuffer.length === 0) {
           term.write(`\r\x1b[K\x1b[90m${mockLogs[logIndex]}\x1b[0m\r\ncalyx-scholar@browser:~$ `);
           logIndex = (logIndex + 1) % mockLogs.length;
@@ -163,12 +161,12 @@ export const Terminal: React.FC = () => {
     <div className="w-full h-full flex flex-col font-mono overflow-hidden">
       {/* Panel Header */}
       <div className="flex items-center justify-between px-4 py-2 bg-white/[0.02] border-b border-white/[0.04]">
-        <div className="text-xs font-semibold text-slate-300 tracking-wider uppercase font-sans">
-          // Terminal Sub-Shell // Environment Console
+        <div className="text-xs font-semibold text-[#d8b4fe]/80 tracking-widest uppercase font-sans">
+          Terminal Console
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-[10px] text-slate-500 font-mono tracking-tight uppercase">
-            {isSandbox ? 'ENV_SANDBOX_MOCK' : 'ENV_NATIVE_PTY'}
+          <span className="text-[10px] text-slate-500 font-sans tracking-wide uppercase">
+            Environment: <span className="font-mono text-slate-400">{isSandbox ? 'Sandbox' : 'Tauri'}</span>
           </span>
           <span className="glowing-indicator green" />
         </div>
@@ -176,14 +174,14 @@ export const Terminal: React.FC = () => {
       
       {ptyFailed ? (
         <div className="flex-1 flex flex-col items-center justify-center p-6 text-center bg-transparent">
-          <div className="mb-4 text-xs tracking-wide text-[#ef4444] border border-[#ef4444]/20 px-3 py-1 uppercase rounded-xl bg-[rgba(239,68,68,0.05)] font-bold">
+          <div className="mb-4 text-xs tracking-wide text-[#ef4444] border border-[#ef4444]/20 px-3 py-1 uppercase rounded-xl bg-[rgba(239,68,68,0.05)] font-sans font-bold">
             PTY Sub-Shell Execution Blocked
           </div>
           <p className="text-xs text-slate-400 max-w-md mb-6 leading-relaxed font-sans">
             Windows administrative policy has blocked the automatic PowerShell shell allocation. Calyx Scholar is prohibited from falling back to non-telemetric CMD sessions.
           </p>
-          <div className="text-left bg-[#101018]/60 p-4 border border-white/[0.03] rounded-2xl text-[11px] max-w-lg w-full text-slate-300 space-y-2">
-            <div className="text-[#f59e0b] font-bold uppercase tracking-wider mb-1">
+          <div className="text-left bg-[#161626]/60 p-4 border border-white/[0.03] rounded-2xl text-[11px] max-w-lg w-full text-slate-300 space-y-2 font-sans">
+            <div className="text-[#d8b4fe] font-bold uppercase tracking-wider mb-1">
               Instructions to Grant Execution Privileges:
             </div>
             <div>1. Open PowerShell on your computer as <span className="text-[#ef4444] font-bold">Administrator</span>.</div>

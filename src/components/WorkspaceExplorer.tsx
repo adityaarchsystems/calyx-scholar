@@ -33,18 +33,18 @@ export const WorkspaceExplorer: React.FC = () => {
       {/* File List / Onboarding Skeletons */}
       <div className="flex-1 overflow-y-auto p-4 space-y-2 scrollbar-thin select-none">
         {fileList.length === 0 ? (
-          // Ultra-Luxury glass structural skeletal loading list
+          // Translucent silver-amethyst gradient skeleton cards
           <div className="space-y-3 py-1">
-            <div className="text-[10px] text-slate-500 tracking-wider font-mono uppercase mb-2 animate-pulse">
-              INGESTING FILE SYSTEM...
+            <div className="text-[10px] text-slate-500 tracking-wider font-sans uppercase mb-2 animate-pulse">
+              Ingesting workspace files...
             </div>
             {[1, 2, 3, 4, 5].map((i) => (
               <div
                 key={i}
-                className="flex items-center gap-3 p-3 rounded-xl border border-white/[0.02] bg-white/[0.01] animate-pulse"
+                className="flex items-center gap-3 p-3 rounded-xl border border-[#d8b4fe]/5 bg-[#d8b4fe]/[0.02] animate-pulse"
               >
-                <div className="w-4 h-4 rounded bg-white/5 shrink-0" />
-                <div className={`h-2.5 bg-white/5 rounded-full ${i % 2 === 0 ? 'w-2/3' : 'w-1/2'}`} />
+                <div className="w-4 h-4 rounded bg-[#d8b4fe]/10 shrink-0" />
+                <div className={`h-2.5 bg-[#d8b4fe]/10 rounded-full ${i % 2 === 0 ? 'w-2/3' : 'w-1/2'}`} />
               </div>
             ))}
           </div>
@@ -58,17 +58,17 @@ export const WorkspaceExplorer: React.FC = () => {
                 onClick={() => setActiveFile(file)}
                 className={`w-full text-left px-3.5 py-3 rounded-xl text-xs font-mono truncate transition-all duration-300 relative border flex items-center justify-between group ${
                   isSelected
-                    ? 'bg-amber-500/5 text-amber-500 border-amber-500/20 shadow-inner'
+                    ? 'bg-[#d8b4fe]/5 text-[#d8b4fe] border-[#d8b4fe]/20 shadow-inner'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.02] border-transparent'
                 }`}
               >
                 <span>{displayName}</span>
                 {isSelected ? (
-                  <span className="text-[9px] tracking-widest text-amber-500/80 font-bold bg-amber-500/10 px-1.5 py-0.5 rounded font-mono">
+                  <span className="text-[9px] tracking-widest text-[#d8b4fe]/80 font-bold bg-[#d8b4fe]/10 px-1.5 py-0.5 rounded font-sans">
                     SEL
                   </span>
                 ) : (
-                  <span className="text-[9px] tracking-widest text-slate-600 font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-mono">
+                  <span className="text-[9px] tracking-widest text-slate-600 font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-sans">
                     LOAD
                   </span>
                 )}
@@ -80,25 +80,25 @@ export const WorkspaceExplorer: React.FC = () => {
 
       {/* Telemetry Metrics Panel */}
       <div className="p-4 border-t border-white/[0.04] bg-white/[0.02] space-y-4">
-        <div className="text-[10px] font-semibold text-slate-400 tracking-widest uppercase font-mono">
-          // INDUSTRIAL TELEMETRY
+        <div className="text-[10px] font-semibold text-[#d8b4fe]/80 tracking-widest uppercase font-sans">
+          Industrial Telemetry
         </div>
         
-        <div className="grid grid-cols-2 gap-3 text-[11px]">
+        <div className="grid grid-cols-2 gap-3 text-[11px] font-sans">
           <div className="bg-white/[0.01] p-3 rounded-xl border border-white/[0.03]">
             <span className="text-slate-500 uppercase block text-[9px] tracking-wide mb-1 font-sans">Syllabus Week</span>
-            <span className="font-bold text-slate-200 font-mono">Week 0{currentWeek}</span>
+            <span className="font-bold text-slate-200">Week 0{currentWeek}</span>
           </div>
           <div className="bg-white/[0.01] p-3 rounded-xl border border-white/[0.03]">
             <span className="text-slate-500 uppercase block text-[9px] tracking-wide mb-1 font-sans">Active Filters</span>
-            <span className="font-bold text-slate-200 font-mono">{prohibitedTokens.length} Tokens</span>
+            <span className="font-bold text-slate-200">{prohibitedTokens.length} Tokens</span>
           </div>
         </div>
 
-        <div className="bg-white/[0.01] p-3 rounded-xl border border-white/[0.03] space-y-2">
+        <div className="bg-white/[0.01] p-3 rounded-xl border border-white/[0.03] space-y-2 font-sans">
           <div className="flex items-center justify-between text-[11px]">
-            <span className="text-slate-500 font-sans">Fault Resolution</span>
-            <span className={`font-mono font-bold text-xs ${hasErrors ? 'text-red-500' : 'text-emerald-500'}`}>
+            <span className="text-slate-500">Fault Resolution</span>
+            <span className={`font-bold text-xs ${hasErrors ? 'text-red-500' : 'text-emerald-500'}`}>
               {hasErrors ? 'CRIT_ERR' : 'NOMINAL'}
             </span>
           </div>
@@ -111,9 +111,9 @@ export const WorkspaceExplorer: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-between text-[10px] text-slate-500 font-mono">
+        <div className="flex items-center justify-between text-[10px] text-slate-500 font-sans tracking-wide">
           <span>SYS_STATUS: ACTIVE</span>
-          <span className="text-slate-400 font-bold">{isSandbox ? 'ENV_SANDBOX' : 'ENV_TAURI'}</span>
+          <span className="text-slate-400 font-bold font-mono">{isSandbox ? 'ENV_SANDBOX' : 'ENV_TAURI'}</span>
         </div>
       </div>
     </div>

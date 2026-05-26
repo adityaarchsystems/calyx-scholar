@@ -5,23 +5,23 @@
   --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Calyx Standard Slate & Gold luxury color tokens */
-  --bg-black: #0a0a12;
-  --bg-darker: #050507;
-  --bg-card: rgba(16, 16, 24, 0.45);
+  /* Calyx Standard Muted Silver-Amethyst luxury color tokens */
+  --bg-black: #0a0a14;
+  --bg-darker: #050508;
+  --bg-card: rgba(22, 22, 38, 0.4);
   
   --border-slate: rgba(30, 41, 59, 0.2);
-  --border-amber-tactical: rgba(245, 158, 11, 0.08);
-  --border-amber-active: rgba(245, 158, 11, 0.25);
+  --border-amethyst-tactical: rgba(216, 180, 254, 0.08);
+  --border-amethyst-active: rgba(216, 180, 254, 0.25);
   
   --text-slate: #64748b;
   --text-muted: #94a3b8;
   --text-primary: #f8fafc;
   
-  /* High-contrast Highlight Accents */
-  --tactical-amber: #f59e0b;
-  --keyword-amber: #d97706;
-  --keyword-amber-glow: rgba(217, 119, 6, 0.12);
+  /* Desaturated Silver-Amethyst Accents */
+  --tactical-amethyst: #d8b4fe;
+  --keyword-amethyst: #c084fc;
+  --keyword-amethyst-glow: rgba(192, 132, 252, 0.12);
   
   --error-neon: #ef4444;
   --error-neon-glow: rgba(239, 68, 68, 0.2);
@@ -35,7 +35,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--bg-black);
+  background: linear-gradient(to bottom, #121222, #0a0a14);
   color: var(--text-primary);
   font-family: var(--font-sans);
   overflow: hidden;
@@ -61,17 +61,17 @@ body {
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(245, 158, 11, 0.2);
+  background: rgba(216, 180, 254, 0.2);
 }
 
 /* Glassmorphism Panel Architecture */
 .glass-card {
   background: var(--bg-card);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid var(--border-amber-tactical);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid var(--border-amethyst-tactical);
   border-radius: 1rem; /* rounded-2xl */
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.03), 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.04), 0 12px 40px 0 rgba(0, 0, 0, 0.5);
   transition: var(--kinetic-transition);
   overflow: hidden;
   display: flex;
@@ -79,8 +79,8 @@ body {
 }
 
 .glass-card:hover, .glass-card.active-panel {
-  border-color: var(--border-amber-active);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.05), 0 8px 36px 0 rgba(245, 158, 11, 0.05), 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+  border-color: var(--border-amethyst-active);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.05), 0 8px 36px 0 rgba(216, 180, 254, 0.05), 0 12px 40px 0 rgba(0, 0, 0, 0.5);
 }
 
 /* Kinetic Pulse Animations */
@@ -153,11 +153,11 @@ body {
 }
 
 .cm-activeLine {
-  background-color: rgba(245, 158, 11, 0.02) !important;
+  background-color: rgba(216, 180, 254, 0.02) !important;
 }
 .cm-activeLineGutter {
-  background-color: rgba(245, 158, 11, 0.06) !important;
-  color: var(--tactical-amber) !important;
+  background-color: rgba(216, 180, 254, 0.06) !important;
+  color: var(--tactical-amethyst) !important;
 }
 
 .cm-error-underline {
@@ -166,8 +166,8 @@ body {
 }
 
 .cm-keyword {
-  color: var(--keyword-amber) !important;
-  background-color: var(--keyword-amber-glow) !important;
+  color: var(--keyword-amethyst) !important;
+  background-color: var(--keyword-amethyst-glow) !important;
   font-weight: 600 !important;
 }
 
