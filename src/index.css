@@ -71,10 +71,10 @@ body {
 
 /* Glassmorphism Panel Architecture */
 .glass-card {
-  background: rgba(12, 12, 24, 0.7);
+  background: rgba(10, 10, 22, 0.75);
   backdrop-filter: blur(32px);
   -webkit-backdrop-filter: blur(32px);
-  border: 1px solid rgba(216, 180, 254, 0.24);
+  border: 1px solid rgba(216, 180, 254, 0.26);
   border-radius: 1rem; /* rounded-2xl */
   box-shadow: 
     inset 0 1px 1px 0 rgba(255, 255, 255, 0.06),

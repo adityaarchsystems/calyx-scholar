@@ -133,7 +133,7 @@ export const Chat: React.FC = () => {
       </div>
 
       {/* Message Output Viewport */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 select-text scrollbar-thin">
+      <div className="flex flex-col flex-1 min-h-0 overflow-y-auto scrollbar-thin p-4 space-y-4 select-text">
         {/* Default Onboarding Frame if no stream has loaded */}
         {streamStatus === 'IDLE_NODE' && !streamTargetRef.current?.textContent && (
           <div className="p-4 border border-[#d8b4fe]/15 bg-[#141423]/40 backdrop-blur-xl rounded-xl space-y-3 transition-all duration-300 hover:border-[#d8b4fe]/30 animate-slide-up">
