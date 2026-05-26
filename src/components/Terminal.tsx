@@ -81,10 +81,10 @@ export const Terminal: React.FC = () => {
       });
     } else {
       // Standalone Browser Sandbox Simulation
-      term.writeln('\x1b[1;35m// CALYX SCHOLAR TERMINAL SIMULATION ENGINE //\x1b[0m');
+      term.writeln('\x1b[1;35mCALYX SCHOLAR TERMINAL SIMULATION ENGINE\x1b[0m');
       term.writeln('\x1b[90m[IPC_BRIDGE]: Isolated browser sandbox detected. Spawning mock PTY session...\x1b[0m');
       term.writeln('');
-      term.write('calyx-scholar@browser:~$ ');
+      term.write('\x1b[1;35mcalyx-scholar@browser\x1b[0m:\x1b[1;37m~$\x1b[0m ');
 
       let inputBuffer = '';
       
@@ -99,7 +99,7 @@ export const Terminal: React.FC = () => {
             term.writeln('\x1b[1;35m│ CALYX SCHOLAR TELEMETRY SYSTEM OVERVIEW - BROWSER VIRTUAL  │\x1b[0m');
             term.writeln('\x1b[1;35m├────────────────────────────────────────────────────────────┤\x1b[0m');
             term.writeln('│ STATUS:    \x1b[32mONLINE (SANDBOX SIMULATION ACTIVE)\x1b[0m              │');
-            term.writeln('│ PORT:      1420 // SYLLABUS: CS50X WEEK 1 ACTIVE           │');
+            term.writeln('│ PORT:      1420 │ SYLLABUS: CS50X WEEK 1 ACTIVE           │');
             term.writeln('│ TELEMETRY: 256-BYTE GUARDRAIL CIRCULAR BUFFER NOMINAL      │');
             term.writeln('\x1b[1;35m└────────────────────────────────────────────────────────────┘\x1b[0m');
           } else if (cmd === 'clear') {
@@ -109,7 +109,7 @@ export const Terminal: React.FC = () => {
           } else if (cmd !== '') {
             term.writeln(`\x1b[31m[MOCK_SHELL]: Command '${cmd}' not found. Type 'help' for sandbox diagnostics.\x1b[0m`);
           }
-          term.write('calyx-scholar@browser:~$ ');
+          term.write('\x1b[1;35mcalyx-scholar@browser\x1b[0m:\x1b[1;37m~$\x1b[0m ');
         } else if (data === '\x7f') { // Backspace
           if (inputBuffer.length > 0) {
             inputBuffer = inputBuffer.slice(0, -1);
@@ -128,13 +128,13 @@ export const Terminal: React.FC = () => {
         '[IPC_BRIDGE]: Isolated sandbox listening on localhost:1420',
         '[SO_AGENT]: Socratic validation active. Prohibited constructs loaded: [while, for, do]',
         '[VIRTUAL_DEVICE]: PTY compile-time macro state: nominal',
-        '[SYS_MONITOR]: Memory utilization: 14.2% // Active threads: 2'
+        '[SYS_MONITOR]: Memory utilization: 14.2% | Active threads: 2'
       ];
       let logIndex = 0;
 
       mockLogInterval = setInterval(() => {
         if (inputBuffer.length === 0) {
-          term.write(`\r\x1b[K\x1b[90m${mockLogs[logIndex]}\x1b[0m\r\ncalyx-scholar@browser:~$ `);
+          term.write(`\r\x1b[K\x1b[90m${mockLogs[logIndex]}\x1b[0m\r\n\x1b[1;35mcalyx-scholar@browser\x1b[0m:\x1b[1;37m~$\x1b[0m `);
           logIndex = (logIndex + 1) % mockLogs.length;
         }
       }, 6000);
@@ -158,10 +158,10 @@ export const Terminal: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full h-full flex flex-col font-mono overflow-hidden">
+    <div className="w-full h-full flex flex-col font-mono overflow-hidden bg-transparent">
       {/* Panel Header */}
-      <div className="flex items-center justify-between px-4 py-2 bg-white/[0.02] border-b border-white/[0.04]">
-        <div className="text-xs font-semibold text-[#d8b4fe]/80 tracking-widest uppercase font-sans">
+      <div className="flex items-center justify-between px-4 py-2 bg-transparent border-b border-white/[0.04]">
+        <div className="text-xs font-bold text-[#ffffff] tracking-widest uppercase font-sans active-hud-glow">
           Terminal Console
         </div>
         <div className="flex items-center gap-2">

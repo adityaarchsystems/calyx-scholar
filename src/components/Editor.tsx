@@ -241,11 +241,11 @@ export const Editor: React.FC = () => {
       >
         {/* Upper Metadata Telemetry Header Row */}
         <div className="flex items-center justify-between pb-3 border-b border-white/[0.04]">
-          <div className="text-xs font-semibold text-[#d8b4fe]/80 tracking-widest uppercase font-sans">
+          <div className="text-xs font-bold text-[#ffffff] tracking-widest uppercase font-sans active-hud-glow">
             Core Viewport
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-[10px] text-slate-500 font-mono tracking-tight uppercase">
+            <span className="text-[10px] text-[#94a3b8] font-mono tracking-tight uppercase">
               NO_FILE_LOADED
             </span>
             <span className="glowing-indicator green" />
@@ -254,103 +254,107 @@ export const Editor: React.FC = () => {
 
         {/* Welcome Grid Content */}
         <div className="flex-1 flex flex-col items-center justify-center py-6 relative">
-          {/* Circular Brand Logo Emblem with soft opacity */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] transition-opacity duration-700">
+          {/* Circular Brand Logo Emblem with soft respiration loop */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-700">
             <img 
               src={logoSrc} 
               alt="Scholastic Emblem Logo" 
-              className="w-72 h-72 object-contain rounded-full border border-[#d8b4fe]/10 p-2"
+              className="w-72 h-72 object-contain rounded-full border border-[#d8b4fe]/10 p-2 emblem-pulse"
               onError={() => setLogoSrc('/logo.png')}
             />
           </div>
 
-          <div className="relative z-10 max-w-lg w-full space-y-6">
+          <div className="relative z-10 max-w-3xl w-full space-y-6 px-4">
             <div className="text-center space-y-2">
-              <h2 className="text-xl font-bold text-slate-200 tracking-wide font-sans">
+              <h2 className="text-xl font-bold text-[#ffffff] tracking-wide font-sans active-hud-glow">
                 Welcome to Calyx Scholar
               </h2>
-              <p className="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
+              <p className="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
                 A decoupled, pedagogical IDE designed to assist novice developers through guided active learning logic.
               </p>
             </div>
 
-            {/* Typography shortcuts & Telemetry grid card */}
-            <div className="bg-[#161626]/40 backdrop-blur-xl rounded-2xl border border-white/[0.03] p-5 shadow-2xl space-y-4">
-              <div className="flex items-center justify-between border-b border-white/[0.04] pb-3">
-                <span className="text-[9px] font-semibold tracking-widest text-[#d8b4fe]/80 font-sans uppercase">
-                  Command Systems
-                </span>
-                <span className="text-[9px] text-slate-500 font-mono">0x4F0B_NOMINAL</span>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                {/* Keyboard shortcuts list */}
+            {/* Asymmetric Layout Deck utilizing crisp rounded-xl glass panels bordered by reflective silver-amethyst sashes */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+              {/* Panel 1: Keyboard Shortcuts (md:col-span-2) */}
+              <div className="md:col-span-2 bg-[#141423]/50 backdrop-blur-xl rounded-xl border border-[#d8b4fe]/24 p-4 shadow-xl space-y-3 transition-all duration-300 hover:border-[#d8b4fe]/45 hover:shadow-2xl hover:shadow-[#d8b4fe]/5">
+                <div className="flex items-center justify-between border-b border-white/[0.04] pb-2">
+                  <span className="text-[9px] font-bold tracking-widest text-[#ffffff] font-sans uppercase active-hud-glow">
+                    Command Shortcuts
+                  </span>
+                  <span className="text-[8px] text-[#94a3b8] font-sans tracking-wider">SYSTEM_MAPPED</span>
+                </div>
                 <div className="space-y-2 font-sans">
-                  <div className="text-xs font-semibold text-slate-300 tracking-wide">
-                    Keyboard Shortcuts
-                  </div>
-                  <div className="space-y-1.5 text-[10px] text-slate-400">
-                    <div className="flex items-center justify-between">
-                      <span>Telemetry Save</span>
-                      <span className="bg-white/5 px-1.5 py-0.5 rounded border border-white/10 text-slate-205 font-mono">Ctrl + S</span>
+                  <div className="space-y-1.5 text-[10px] text-slate-300">
+                    <div className="flex items-center justify-between p-1 hover:bg-white/[0.02] rounded transition-colors">
+                      <span className="text-[#94a3b8] font-medium">Save Buffer State</span>
+                      <span className="bg-[#121220]/60 px-2 py-0.5 rounded border border-[#d8b4fe]/25 text-[#ffffff] font-sans font-semibold text-[9px]">Ctrl + S</span>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span>Incremental Undo</span>
-                      <span className="bg-white/5 px-1.5 py-0.5 rounded border border-white/10 text-slate-205 font-mono">Ctrl + Z</span>
+                    <div className="flex items-center justify-between p-1 hover:bg-white/[0.02] rounded transition-colors">
+                      <span className="text-[#94a3b8] font-medium">Step Backward (Undo)</span>
+                      <span className="bg-[#121220]/60 px-2 py-0.5 rounded border border-[#d8b4fe]/25 text-[#ffffff] font-sans font-semibold text-[9px]">Ctrl + Z</span>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span>Buffer Search</span>
-                      <span className="bg-white/5 px-1.5 py-0.5 rounded border border-white/10 text-slate-205 font-mono">Ctrl + F</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Telemetry states */}
-                <div className="space-y-2 border-l border-white/[0.04] pl-4 font-sans">
-                  <div className="text-xs font-semibold text-slate-300 tracking-wide">
-                    Telemetry Indicators
-                  </div>
-                  <div className="space-y-1.5 text-[10px] text-slate-400">
-                    <div className="flex items-center justify-between">
-                      <span>Circular Buffer</span>
-                      <span className="text-emerald-500 font-bold font-mono">NOMINAL</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span>AST Syntax Guard</span>
-                      <span className="text-amber-500 font-bold font-mono">ZERO_LOOP</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span>Ingestion Engine</span>
-                      <span className="text-slate-200 font-bold">ACTIVE</span>
+                    <div className="flex items-center justify-between p-1 hover:bg-white/[0.02] rounded transition-colors">
+                      <span className="text-[#94a3b8] font-medium">Search Workspace Buffer</span>
+                      <span className="bg-[#121220]/60 px-2 py-0.5 rounded border border-[#d8b4fe]/25 text-[#ffffff] font-sans font-semibold text-[9px]">Ctrl + F</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Syllabus Milestones */}
-              <div className="border-t border-white/[0.04] pt-3.5 space-y-2 font-sans">
-                <div className="text-xs font-semibold text-slate-300 tracking-wide">
-                  Upcoming Syllabus Milestones
+              {/* Panel 2: AST Compile Metrics (md:col-span-1) */}
+              <div className="md:col-span-1 bg-[#141423]/50 backdrop-blur-xl rounded-xl border border-[#d8b4fe]/24 p-4 shadow-xl space-y-3 transition-all duration-300 hover:border-[#d8b4fe]/45 hover:shadow-2xl hover:shadow-[#d8b4fe]/5">
+                <div className="flex items-center justify-between border-b border-white/[0.04] pb-2">
+                  <span className="text-[9px] font-bold tracking-widest text-[#ffffff] font-sans uppercase active-hud-glow">
+                    AST Compile
+                  </span>
+                  <span className="glowing-indicator green" />
                 </div>
-                <div className="grid grid-cols-3 gap-2 text-[10px]">
-                  <div className="bg-white/[0.01] border border-white/[0.03] p-2 rounded-xl text-center">
-                    <span className="block text-slate-500 uppercase font-mono text-[8px] tracking-tight">Week 01</span>
-                    <span className="text-slate-300 font-medium truncate block">Recursive Logic</span>
-                  </div>
-                  <div className="bg-white/[0.01] border border-white/[0.03] p-2 rounded-xl text-center">
-                    <span className="block text-slate-500 uppercase font-mono text-[8px] tracking-tight">Week 02</span>
-                    <span className="text-slate-300 font-medium truncate block">Pointers & Memory</span>
-                  </div>
-                  <div className="bg-white/[0.01] border border-white/[0.03] p-2 rounded-xl text-center text-slate-500">
-                    <span className="block text-slate-600 uppercase font-mono text-[8px] tracking-tight">Week 03</span>
-                    <span className="font-medium truncate block">Database Schemas</span>
+                <div className="space-y-2 font-sans">
+                  <div className="space-y-1.5 text-[10px] text-slate-350">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[#94a3b8] font-medium">Syllabus Guard</span>
+                      <span className="text-emerald-400 font-bold text-[9px] tracking-wider active-hud-glow">NOMINAL</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[#94a3b8] font-medium">Parser Ingestion</span>
+                      <span className="text-amber-400 font-bold text-[9px] tracking-wider active-hud-glow">ZERO_LOOP</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[#94a3b8] font-medium">Thread Lock</span>
+                      <span className="text-[#ffffff] font-bold text-[9px] tracking-wide">ACTIVE</span>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="text-center text-[10px] text-slate-500 font-sans tracking-wide pt-2 border-t border-white/[0.02]">
-                Select a file from the explorer sidebar to begin coding.
+              {/* Panel 3: Syllabus Milestones / Task Checklists (md:col-span-full) */}
+              <div className="md:col-span-full bg-[#141423]/50 backdrop-blur-xl rounded-xl border border-[#d8b4fe]/24 p-4 shadow-xl space-y-3 transition-all duration-300 hover:border-[#d8b4fe]/45 hover:shadow-2xl hover:shadow-[#d8b4fe]/5">
+                <div className="flex items-center justify-between border-b border-white/[0.04] pb-2">
+                  <span className="text-[9px] font-bold tracking-widest text-[#ffffff] font-sans uppercase active-hud-glow">
+                    Active Syllabus Milestones & Checklists
+                  </span>
+                  <span className="text-[8px] text-[#94a3b8] font-sans tracking-wide">PHASE_01_INGESTION</span>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-[10px] font-sans">
+                  <div className="bg-[#121220]/45 border border-[#d8b4fe]/25 p-2.5 rounded-lg text-center transition-all hover:bg-white/[0.03] hover:border-[#d8b4fe]/45 active-hud-glow">
+                    <span className="block text-[#94a3b8] uppercase text-[8px] tracking-widest mb-0.5 font-bold">Week 01 - ACTIVE</span>
+                    <span className="text-[#ffffff] font-bold block truncate">Recursive Integrations</span>
+                  </div>
+                  <div className="bg-white/[0.01] border border-white/[0.03] p-2.5 rounded-lg text-center transition-all hover:bg-white/[0.03] opacity-60">
+                    <span className="block text-[#94a3b8] uppercase text-[8px] tracking-wider mb-0.5 font-medium">Week 02 - LOCKED</span>
+                    <span className="text-slate-400 font-medium block truncate">Pointers & Structural Memory</span>
+                  </div>
+                  <div className="bg-white/[0.01] border border-white/[0.03] p-2.5 rounded-lg text-center transition-all hover:bg-white/[0.03] opacity-60">
+                    <span className="block text-[#94a3b8] uppercase text-[8px] tracking-wider mb-0.5 font-medium">Week 03 - LOCKED</span>
+                    <span className="text-slate-400 font-medium block truncate">Abstract Data Structures</span>
+                  </div>
+                </div>
               </div>
+            </div>
+
+            <div className="text-center text-[10px] text-slate-500 font-sans tracking-wide pt-2 border-t border-white/[0.02]">
+              Select a file from the explorer sidebar to begin coding.
             </div>
           </div>
         </div>
@@ -367,11 +371,11 @@ export const Editor: React.FC = () => {
     >
       {/* Upper Metadata Telemetry Header Row */}
       <div className="flex items-center justify-between px-4 py-2 bg-neutral-950/40 border-b border-white/[0.04]">
-        <div className="text-xs font-semibold text-[#d8b4fe]/80 tracking-widest uppercase font-sans">
+        <div className="text-xs font-bold text-[#ffffff] tracking-widest uppercase font-sans active-hud-glow">
           Core Viewport
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-[10px] text-slate-400 font-mono tracking-tight uppercase">
+          <span className="text-[10px] text-[#ffffff] font-mono tracking-tight uppercase">
             {displayFilename}
           </span>
           <span className={`glowing-indicator ${telemetryErrors.length > 0 ? 'red' : 'green'}`} />
