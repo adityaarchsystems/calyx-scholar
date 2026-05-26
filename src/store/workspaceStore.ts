@@ -1,6 +1,25 @@
 import { create } from 'zustand';
 import { TelemetryFault } from '../types/telemetry';
 
+export interface SyllabusTask {
+  text: string;
+  completed: boolean;
+}
+
+export const parseTasksFromMarkdown = (content: string): SyllabusTask[] => {
+  const regex = /^\s*-\s*\[([ xX])\]\s+(.+)$/gm;
+  const tasks: SyllabusTask[] = [];
+  let match;
+  regex.lastIndex = 0;
+  while ((match = regex.exec(content)) !== null) {
+    tasks.push({
+      text: match[2].trim(),
+      completed: match[1].toLowerCase() === 'x',
+    });
+  }
+  return tasks;
+};
+
 interface WorkspaceState {
   activeFile: string | null;
   activeFileContent: string;
@@ -11,6 +30,7 @@ interface WorkspaceState {
   isStreaming: boolean;
   activeTab: 'notes' | 'assessment' | 'terminal';
   fileList: string[];
+  parsedTasks: SyllabusTask[];
   
   // Asynchronous Core Actions
   setActiveFile: (filePath: string | null) => Promise<void>;
@@ -20,6 +40,8 @@ interface WorkspaceState {
   executePtyCommand: (_command: string) => Promise<void>;
   handleStreamViolation: () => void;
   initializeWorkspace: () => Promise<void>;
+  updateFileContent: (content: string) => void;
+  toggleTask: (taskText: string, completed: boolean) => Promise<void>;
 }
 
 export const useWorkspaceStore = create<WorkspaceState>((set) => ({
@@ -32,6 +54,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set) => ({
   isStreaming: false,
   activeTab: 'notes',
   fileList: [],
+  parsedTasks: [],
 
   setActiveFile: async (filePath) => {
     set({ activeFile: filePath });
@@ -41,7 +64,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set) => ({
         try {
           const { invoke } = await import('@tauri-apps/api/core');
           const content = await invoke<string>('load_file_content', { path: filePath });
-          set({ activeFileContent: content });
+          set({ activeFileContent: content, parsedTasks: parseTasksFromMarkdown(content) });
         } catch (e) {
           console.error("Failed to load file content:", e);
         }
@@ -54,10 +77,10 @@ export const useWorkspaceStore = create<WorkspaceState>((set) => ({
         };
         const filename = filePath.split('/').pop() || filePath;
         const content = stored !== null ? stored : (defaultMockDocs[filename] || `# ${filename}\n\nWorkspace Note Loaded. Sandbox simulation enabled.`);
-        set({ activeFileContent: content });
+        set({ activeFileContent: content, parsedTasks: parseTasksFromMarkdown(content) });
       }
     } else {
-      set({ activeFileContent: '' });
+      set({ activeFileContent: '', parsedTasks: [] });
     }
     
     if (isTauri) {
@@ -105,7 +128,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set) => ({
           set({ activeFile: defaultFile });
           try {
             const content = await invoke<string>('load_file_content', { path: defaultFile });
-            set({ activeFileContent: content });
+            set({ activeFileContent: content, parsedTasks: parseTasksFromMarkdown(content) });
           } catch (e) {
             console.error("Failed to load content for default file:", e);
           }
@@ -127,7 +150,41 @@ export const useWorkspaceStore = create<WorkspaceState>((set) => ({
           'assessment1.md': `# Assessment 1: Recursive Mathematical Integrations\n\nImplement a recursive function to compute factorials or Fibonacci numbers without utilizing circular iteration keywords (\`for\`, \`while\`).\n\n## System Validation Check\nWrite your recursive function below and press save to trigger the Socratic static telemetry parser loop.`
         };
         const content = stored !== null ? stored : (defaultMockDocs[defaultFile] || '');
-        set({ activeFileContent: content });
+        set({ activeFileContent: content, parsedTasks: parseTasksFromMarkdown(content) });
+      }
+    }
+  },
+
+  updateFileContent: (content) => {
+    set({ activeFileContent: content, parsedTasks: parseTasksFromMarkdown(content) });
+  },
+
+  toggleTask: async (taskText: string, completed: boolean) => {
+    const state = useWorkspaceStore.getState();
+    const content = state.activeFileContent;
+    const activeFile = state.activeFile;
+    if (!activeFile) return;
+
+    // Use regex to locate the exact task line and replace it
+    const escapedText = taskText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`^(\\s*-\\s*\\[)([ xX])(\\]\\s+${escapedText}\\s*)$`, 'm');
+    
+    const newChar = completed ? 'x' : ' ';
+    const match = content.match(regex);
+    if (match) {
+      const newContent = content.replace(regex, `$1${newChar}$3`);
+      set({ activeFileContent: newContent, parsedTasks: parseTasksFromMarkdown(newContent) });
+
+      const isTauri = typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window;
+      if (isTauri) {
+        try {
+          const { invoke } = await import('@tauri-apps/api/core');
+          await invoke('save_file_content', { content: newContent });
+        } catch (e) {
+          console.error("Failed to save toggled task to disk:", e);
+        }
+      } else {
+        localStorage.setItem(`calyx_mock_${activeFile}`, newContent);
       }
     }
   }

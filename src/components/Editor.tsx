@@ -95,11 +95,19 @@ export const Editor: React.FC = () => {
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   
   const activeFile = useWorkspaceStore((state) => state.activeFile);
+  const activeFileContent = useWorkspaceStore((state) => state.activeFileContent);
+  const updateFileContent = useWorkspaceStore((state) => state.updateFileContent);
   const telemetryErrors = useWorkspaceStore((state) => state.telemetryErrors);
   const setTelemetryErrors = useWorkspaceStore((state) => state.setTelemetryErrors);
   const prohibitedTokens = useWorkspaceStore((state) => state.prohibitedTokens);
 
   const [logoSrc, setLogoSrc] = useState<string>('/logo.png');
+  const [isSavingFlash, setIsSavingFlash] = useState<boolean>(false);
+
+  const triggerSaveFlash = () => {
+    setIsSavingFlash(true);
+    setTimeout(() => setIsSavingFlash(false), 600);
+  };
 
   // Dynamic asset loading resolver for Tauri environments
   useEffect(() => {
@@ -120,6 +128,59 @@ export const Editor: React.FC = () => {
     }
   }, []);
 
+  // Synchronize external store content updates back to Editor (e.g. from sidebar checklists)
+  useEffect(() => {
+    if (viewRef.current && activeFileContent !== viewRef.current.state.doc.toString()) {
+      // Avoid cursor jumping by only replacing if the editor does not currently have keyboard focus
+      if (!viewRef.current.hasFocus) {
+        viewRef.current.dispatch({
+          changes: { from: 0, to: viewRef.current.state.doc.length, insert: activeFileContent }
+        });
+      }
+    }
+  }, [activeFileContent]);
+
+  // Explicit Ctrl+S Interceptor global hotkey hook
+  useEffect(() => {
+    const handleKeyDown = async (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        if (!activeFile || !viewRef.current) return;
+
+        // Truncate active 500ms debounce timer to prevent background disk save collisions
+        if (saveTimeoutRef.current) {
+          clearTimeout(saveTimeoutRef.current);
+          saveTimeoutRef.current = null;
+        }
+
+        const content = viewRef.current.state.doc.toString();
+        
+        // Update store state and trigger regex parsing
+        updateFileContent(content);
+
+        // Immediate write to disk
+        if (typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window) {
+          try {
+            const { invoke } = await import('@tauri-apps/api/core');
+            await invoke('save_file_content', { content });
+          } catch (err) {
+            console.error("Ctrl+S save failed:", err);
+          }
+        } else {
+          localStorage.setItem(`calyx_mock_${activeFile}`, content);
+        }
+
+        // Trigger visual border flash sweep
+        triggerSaveFlash();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [activeFile, updateFileContent]);
+
   useEffect(() => {
     if (!editorRef.current || !activeFile) return;
 
@@ -139,8 +200,11 @@ export const Editor: React.FC = () => {
 
             const content = update.state.doc.toString();
 
-            // Trailing-edge client-side debounce to prevent IPC overloading
+            // Trailing-edge 500ms client-side save debounce
             saveTimeoutRef.current = setTimeout(async () => {
+              // Update state store and trigger parsing
+              updateFileContent(content);
+
               if (typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window) {
                 const { invoke } = await import('@tauri-apps/api/core');
                 invoke('save_file_content', { content }).catch(console.error);
@@ -181,7 +245,10 @@ export const Editor: React.FC = () => {
                   window.dispatchEvent(event);
                 }
               }
-            }, 300);
+
+              // Trigger visual saving border flash sweep
+              triggerSaveFlash();
+            }, 500);
           }
         }),
       ],
@@ -194,7 +261,7 @@ export const Editor: React.FC = () => {
       if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
       view.destroy();
     };
-  }, [activeFile, prohibitedTokens, setTelemetryErrors]);
+  }, [activeFile, prohibitedTokens, setTelemetryErrors, updateFileContent]);
 
   useEffect(() => {
     if (activeFile && viewRef.current) {
@@ -367,7 +434,11 @@ export const Editor: React.FC = () => {
   return (
     <div 
       aria-label="Core Code Editor"
-      className="w-full h-full flex flex-col bg-transparent text-slate-200 font-mono"
+      className={`w-full h-full flex flex-col bg-transparent text-slate-200 font-mono border rounded-xl transition-all duration-300 ${
+        isSavingFlash 
+          ? 'platinum-save-flash bg-white/[0.02]' 
+          : 'border-white/[0.04]'
+      }`}
     >
       {/* Upper Metadata Telemetry Header Row */}
       <div className="flex items-center justify-between px-4 py-2 bg-neutral-950/40 border-b border-white/[0.04]">

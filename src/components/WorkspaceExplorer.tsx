@@ -8,6 +8,8 @@ export const WorkspaceExplorer: React.FC = () => {
   const currentWeek = useWorkspaceStore((state) => state.currentWeek);
   const prohibitedTokens = useWorkspaceStore((state) => state.prohibitedTokens);
   const telemetryErrors = useWorkspaceStore((state) => state.telemetryErrors);
+  const parsedTasks = useWorkspaceStore((state) => state.parsedTasks || []);
+  const toggleTask = useWorkspaceStore((state) => state.toggleTask);
 
   const [isSandbox, setIsSandbox] = useState<boolean>(false);
 
@@ -75,6 +77,40 @@ export const WorkspaceExplorer: React.FC = () => {
               </button>
             );
           })
+        )}
+
+        {/* Dynamic Weekly Syllabus Task Deck */}
+        {activeFile && parsedTasks.length > 0 && (
+          <div className="mt-6 pt-4 border-t border-white/[0.04] space-y-3 animate-slide-up select-text">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold tracking-widest text-[#ffffff] font-sans uppercase active-hud-glow">
+                Syllabus Tasks
+              </span>
+              <span className="text-[9px] text-[#94a3b8] font-sans tracking-wide">
+                {parsedTasks.filter(t => t.completed).length}/{parsedTasks.length} DONE
+              </span>
+            </div>
+            <div className="space-y-2 font-sans text-sm text-slate-200 tracking-wide">
+              {parsedTasks.map((task, idx) => (
+                <label
+                  key={idx}
+                  className="flex items-start gap-3 p-2.5 rounded-xl border border-white/[0.03] bg-[#141423]/30 hover:border-[#d8b4fe]/30 hover:bg-[#141423]/50 transition-all duration-300 cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    checked={task.completed}
+                    onChange={(e) => toggleTask(task.text, e.target.checked)}
+                    className="mt-0.5 rounded border-white/20 bg-black/40 text-[#d8b4fe] focus:ring-0 focus:ring-offset-0 cursor-pointer transition-all duration-200"
+                  />
+                  <span className={`leading-tight select-none transition-all ${
+                    task.completed ? 'line-through text-slate-500' : 'text-slate-200'
+                  }`}>
+                    {task.text}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </div>
         )}
       </div>
 
