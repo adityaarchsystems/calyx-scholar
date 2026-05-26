@@ -4,9 +4,72 @@ import { useWorkspaceStore } from '../store/workspaceStore';
 export const Chat: React.FC = () => {
   const streamTargetRef = useRef<HTMLDivElement>(null);
   const fallbackRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  
   const handleStreamViolation = useWorkspaceStore((state) => state.handleStreamViolation);
   
   const [streamStatus, setStreamStatus] = useState<'IDLE_NODE' | 'ACTIVE_STREAM' | 'VIOLATION'>('IDLE_NODE');
+  const [autoScrollLocked, setAutoScrollLocked] = useState<boolean>(false);
+
+  const autoScrollLockedRef = useRef<boolean>(false);
+  const isScrollingTicking = useRef<boolean>(false);
+
+  // Sync scroll lock state to ref for safe access inside events
+  useEffect(() => {
+    autoScrollLockedRef.current = autoScrollLocked;
+  }, [autoScrollLocked]);
+
+  // Proximity scroll-lock check
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const container = e.currentTarget;
+    const isAtBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 48;
+    setAutoScrollLocked(!isAtBottom);
+  };
+
+  // Ticking-guarded requestAnimationFrame scroll to bottom
+  const scrollToBottom = () => {
+    if (!autoScrollLockedRef.current && !isScrollingTicking.current) {
+      isScrollingTicking.current = true;
+      requestAnimationFrame(() => {
+        if (chatContainerRef.current) {
+          chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+        isScrollingTicking.current = false;
+      });
+    }
+  };
+
+  // Immediate override and scroll reset for user-initiated transactions
+  const forceScrollToBottom = () => {
+    setAutoScrollLocked(false);
+    autoScrollLockedRef.current = false;
+    requestAnimationFrame(() => {
+      if (chatContainerRef.current) {
+        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      }
+    });
+  };
+
+  // ResizeObserver layout anchor for Windows Tauri container scaling
+  useEffect(() => {
+    if (!chatContainerRef.current) return;
+
+    const observer = new ResizeObserver(() => {
+      if (!autoScrollLockedRef.current) {
+        requestAnimationFrame(() => {
+          if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+          }
+        });
+      }
+    });
+
+    observer.observe(chatContainerRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     const isTauri = typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window;
@@ -22,8 +85,11 @@ export const Chat: React.FC = () => {
           if (streamTargetRef.current) {
             if (event.payload === '') {
               streamTargetRef.current.textContent = '';
+              // Bypass active scroll lock, force update to bottom
+              forceScrollToBottom();
             } else {
               streamTargetRef.current.textContent += event.payload;
+              scrollToBottom();
             }
           }
         });
@@ -43,6 +109,7 @@ export const Chat: React.FC = () => {
                   Context Diagnostic Challenge: ${event.payload}
                 </div>
               </div>`;
+            forceScrollToBottom();
           }
           handleStreamViolation();
         });
@@ -59,6 +126,9 @@ export const Chat: React.FC = () => {
           streamTargetRef.current.textContent = '';
           fallbackRef.current.innerHTML = '';
           
+          // Force bottom scroll when user explicitly initiates a transaction
+          forceScrollToBottom();
+          
           const socraticText = `I noticed a structural syntax anomaly in your workspace code: 'Prohibited construct signature detected under Week syllabus constraints.' on line ${fault.lineNumber}.\n\nIf we look closely at this expression, how does it align with our active weekly syllabus boundaries? What can we discover to refine the AST structure and fulfill validation requirements?`;
           
           let index = 0;
@@ -70,6 +140,7 @@ export const Chat: React.FC = () => {
                 streamTargetRef.current.textContent += socraticText[index];
               }
               index++;
+              scrollToBottom();
             } else {
               if (simulatedStreamInterval) clearInterval(simulatedStreamInterval);
               setStreamStatus('IDLE_NODE');
@@ -90,6 +161,7 @@ export const Chat: React.FC = () => {
               }
               setStreamStatus('VIOLATION');
               handleStreamViolation();
+              scrollToBottom();
             }
           }, 15);
         }
@@ -133,10 +205,14 @@ export const Chat: React.FC = () => {
       </div>
 
       {/* Message Output Viewport */}
-      <div className="flex flex-col flex-1 min-h-0 overflow-y-auto scrollbar-thin p-4 space-y-4 select-text">
+      <div 
+        ref={chatContainerRef}
+        onScroll={handleScroll}
+        className="flex flex-col flex-1 min-h-0 overflow-y-auto scrollbar-thin p-4 space-y-4 select-text"
+      >
         {/* Default Onboarding Frame if no stream has loaded */}
         {streamStatus === 'IDLE_NODE' && !streamTargetRef.current?.textContent && (
-          <div className="p-4 border border-[#d8b4fe]/15 bg-[#141423]/40 backdrop-blur-xl rounded-xl space-y-3 transition-all duration-300 hover:border-[#d8b4fe]/30 animate-slide-up">
+          <div className="p-4 border border-[#d8b4fe]/26 bg-[#141423]/40 backdrop-blur-xl rounded-xl space-y-3 transition-all duration-300 hover:border-[#d8b4fe]/45 animate-slide-up">
             <div className="text-[10px] font-bold text-[#ffffff] uppercase tracking-wider font-sans active-hud-glow">
               Socratic Interceptor
             </div>
@@ -153,11 +229,12 @@ export const Chat: React.FC = () => {
         {/* Asymmetrical silver-amethyst glass hint bubble */}
         <div 
           ref={streamTargetRef} 
-          className="whitespace-pre-wrap leading-relaxed text-sm text-[#ffffff] font-sans tracking-wide bg-[#0c0c18]/70 backdrop-blur-xl p-4 rounded-xl border border-[#d8b4fe]/20 shadow-xl max-w-[95%] float-left transition-all duration-300 hover:border-[#d8b4fe]/50 hover:shadow-2xl animate-slide-up" 
+          className="w-full h-auto min-h-max overflow-visible break-words whitespace-pre-wrap text-slate-100 selection:bg-[#c084fc]/30 font-sans tracking-wide bg-[#0c0c18]/70 backdrop-blur-xl p-4 rounded-xl border border-[#d8b4fe]/26 shadow-xl max-w-[95%] float-left transition-all duration-300 hover:border-[#d8b4fe]/45 hover:shadow-2xl animate-slide-up" 
         />
         <div ref={fallbackRef} className="clear-both" />
       </div>
     </div>
   );
 };
+
 
