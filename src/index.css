@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=JetBrains+Mono:wght@300;400;500;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Low-saturation monochrome and tactical color tokens */
+  --bg-black: #050505;
+  --bg-darker: #0a0a0a;
+  --bg-card: #0f0f11;
+  --border-slate: #1e293b;
+  --border-muted: #2d3748;
+  
+  --text-slate: #64748b;
+  --text-muted: #94a3b8;
+  --text-primary: #f8fafc;
+  
+  /* Tactical Highlights */
+  --keyword-amber: #d97706;
+  --keyword-amber-glow: rgba(217, 119, 6, 0.15);
+  
+  --error-neon: #ef4444;
+  --error-neon-glow: rgba(239, 68, 68, 0.25);
+  
+  --kinetic-transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-black);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom global overrides for styling */
+.font-mono {
+  font-family: var(--font-mono) !important;
+}
+
+/* Scrollbar kinetics */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-black);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-slate);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-slate);
+}
+
+/* CRT glowing overlay scanline */
+.crt-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  background-size: 100% 4px, 6px 100%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Glassmorphism containers */
+.glass-panel {
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-slate);
+  transition: var(--kinetic-transition);
+}
+.glass-panel:hover {
+  border-color: var(--text-slate);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Micro-animations */
+@keyframes pulse-glowing {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(0.96);
+  }
+}
+
+.glowing-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse-glowing 2s infinite ease-in-out;
+}
+
+.glowing-indicator.red {
+  background-color: var(--error-neon);
+  box-shadow: 0 0 8px var(--error-neon);
+}
+
+.glowing-indicator.amber {
+  background-color: var(--keyword-amber);
+  box-shadow: 0 0 8px var(--keyword-amber);
+}
+
+.glowing-indicator.slate {
+  background-color: var(--text-slate);
+  box-shadow: 0 0 8px var(--text-slate);
+}
+
+/* CodeMirror 6 Custom Low-Saturation Tactical Theme */
+.cm-editor {
+  background-color: var(--bg-black) !important;
+  color: var(--text-muted) !important;
+  height: 100% !important;
+}
+
+.cm-gutters {
+  background-color: var(--bg-darker) !important;
+  border-right: 1px solid var(--border-slate) !important;
+  color: var(--text-slate) !important;
+  font-family: var(--font-mono) !important;
+}
+
+.cm-content {
+  font-family: var(--font-mono) !important;
+  font-size: 13px !important;
+}
+
+/* Monochrome Code Styling Highlight Overrides */
+.cm-error-underline {
+  border-bottom: 2px wavy var(--error-neon) !important;
+  background-color: var(--error-neon-glow) !important;
+}
+
+/* Tactical highlight categories override inside editor */
+.cm-keyword {
+  color: var(--keyword-amber) !important;
+  background-color: var(--keyword-amber-glow) !important;
+  font-weight: 500 !important;
+}
+
+.cm-variableName, .cm-variableName2 {
+  color: var(--text-primary) !important;
+}
+
+.cm-comment {
+  color: var(--text-slate) !important;
+  font-style: italic !important;
+}
+
+.cm-string {
+  color: var(--text-muted) !important;
+}
+
+/* Active statements / Cursor line highlighting */
+.cm-activeLine {
+  background-color: rgba(255, 255, 255, 0.02) !important;
+}
+.cm-activeLineGutter {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Custom error gutter styling */
+.cm-error-gutter-marker {
+  color: var(--error-neon) !important;
+  text-shadow: 0 0 6px var(--error-neon);
+  font-weight: bold;
+}

@@ -1,0 +1,80 @@
+{
+  "course_id": "cs50x-2026",
+  "course_title": "CS50x: Introduction to Computer Science",
+  "compiler_fallback": "tree-sitter",
+  "socratic_enforcement": {
+    "interception_mode": "token-sliding-window",
+    "fallback_strategy": "deterministic-category-injection"
+  },
+  "weeks": [
+    {
+      "week": 1,
+      "topic": "C Syntax, Variables, & Conditionals",
+      "compilation": {
+        "command": "clang -fsyntax-only -std=c11 -Wall -Werror",
+        "target_extension": "c"
+      },
+      "allowed_concepts": [
+        "variables",
+        "integers",
+        "floats",
+        "chars",
+        "conditionals",
+        "if-else",
+        "while-loops",
+        "for-loops",
+        "arithmetic-operators"
+      ],
+      "prohibited_constructs": [
+        "pointers",
+        "addresses",
+        "arrays",
+        "custom-functions",
+        "structs",
+        "typedef",
+        "file-io",
+        "dynamic-allocation",
+        "malloc",
+        "free"
+      ],
+      "validation_criteria": {
+        "required_includes": ["stdio.h"],
+        "max_complexity_score": 10,
+        "prohibited_keywords": ["*", "malloc", "free", "typedef", "struct"]
+      }
+    },
+    {
+      "week": 2,
+      "topic": "Arrays & Memory representation",
+      "compilation": {
+        "command": "clang -fsyntax-only -std=c11 -Wall -Werror",
+        "target_extension": "c"
+      },
+      "allowed_concepts": [
+        "arrays",
+        "strings",
+        "null-terminator",
+        "ascii",
+        "indexing",
+        "multidimensional-arrays",
+        "type-casting",
+        "custom-functions"
+      ],
+      "prohibited_constructs": [
+        "pointers",
+        "address-of-operator",
+        "structs",
+        "typedef",
+        "file-io",
+        "malloc",
+        "free",
+        "linked-lists"
+      ],
+      "validation_criteria": {
+        "required_includes": ["stdio.h", "string.h", "ctype.h"],
+        "max_complexity_score": 25,
+        "prohibited_keywords": ["malloc", "free", "struct", "typedef"]
+      }
+    }
+  ]
+}

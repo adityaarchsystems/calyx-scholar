@@ -1,0 +1,21 @@
+[package]
+name = "calyx-scholar"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tauri = { version = "2.0.0" }
+tokio = { version = "1.38.0", features = ["full"] }
+notify = { version = "6.1.1" }
+serde = { version = "1.0.203", features = ["derive"] }
+serde_json = { version = "1.0.120" }
+tree-sitter = { version = "0.22.6" }
+tree-sitter-c = { version = "0.21.3" }
+tree-sitter-python = { version = "0.21.0" }
+regex = { version = "1.10.5" }
+portable-pty = "0.8.1"
+tokio-util = { version = "0.7.11", features = ["codec"] }
+reqwest = { version = "0.12.5", features = ["json", "stream"] }
+
+[build-dependencies]
+tauri-build = { version = "2.0.0" }

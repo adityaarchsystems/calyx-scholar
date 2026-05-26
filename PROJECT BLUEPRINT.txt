@@ -1,0 +1,200 @@
+# **CS-SCHOLAR-BLUEPRINT-01: COMPREHENSIVE ARCHITECTURAL BLUEPRINT FOR CALYX SCHOLAR**
+
+---
+
+## **I. System Topology and Core Environment**
+
+`Calyx Scholar` is engineered as a high-performance, local-first, decentralized pedagogical system running inside a unified desktop application wrapper powered by **Tauri 2.0 (Rust Core)** and **React 19 / TypeScript 5.x**. The system bypasses centralized databases by utilizing the user's local directory of flat Markdown files (compatible with **Obsidian**) and their code workspace as the unified **State Machine**.
+
+### **1.1 Architectural Component Grid**
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                        TAURI DESKTOP APPLICATION                       │
+│                                                                        │
+│   ┌──────────────────────────────────┐  ┌──────────────────────────┐   │
+│   │       FRONTEND VIEW PORT         │  │     RUST BACKEND CORE    │   │
+│   │ ┌──────────────────────────────┐ │  │ ┌──────────────────────┐ │   │
+│   │ │ CodeMirror 6 (Markdown Sync) │ │  │ │ notify-rs File Watcher│ │   │
+│   │ └──────────────────────────────┘ │  │ └──────────────────────┘ │   │
+│   │ ┌──────────────────────────────┐ │  │ ┌──────────────────────┐ │   │
+│   │ │ Xterm.js Terminal Shell      │ │◄─┼►│ PTY Spawn & Capture  │ │   │
+│   │ └──────────────────────────────┘ │  │ └──────────────────────┘ │   │
+│   │ ┌──────────────────────────────┐ │  │ ┌──────────────────────┐ │   │
+│   │ │ Agentic Telemetry Overlay    │ │  │ │ Socratic State Loop  │ │   │
+│   │ └──────────────────────────────┘ │  │ └──────────────────────┘ │   │
+│   └──────────────────────────────────┘  └────────────▲─────────────┘   │
+└──────────────────────────────────────────────────────┼─────────────────┘
+                                                       ▼
+                                      ┌──────────────────────────────────┐
+                                      │   ANTIGRAVITY 2.0 WORKSPACE      │
+                                      │  Internal Forge & Compiler Rig   │
+                                      └──────────────────────────────────┘
+
+```
+
+---
+
+## **II. The Agent Stack: Archetypes and Interaction Specifications**
+
+The orchestration layer inside `antigravity 2.0` is split into five distinct sub-agents, each operating within immutable context boundaries. Every agent interaction is governed by strict input schemas and zero-leak output rules.
+
+```
+                  ┌──────────────────────────────┐
+                  │   CS-SCHOLAR-ORCHESTRATOR    │
+                  └──────────────┬───────────────┘
+            ┌────────────────────┼────────────────────┐
+            ▼                    ▼                    ▼
+┌──────────────────────┐ ┌───────────────┐ ┌──────────────────────┐
+│ CS-SCHOLAR-TELEMETRY │ │ CS-SCHOLAR-   │ │ CS-SCHOLAR-PASSPORT  │
+└──────────────────────┘ │ MANIFEST      │ └──────────────────────┘
+                         └───────┬───────┘
+                                 ▼
+                         ┌───────────────┐
+                         │  CS-SCHOLAR-  │
+                         │   SOCRATIC    │
+                         └───────────────┘
+
+```
+
+### **2.1 Sub-Agent Directory & Functional Matrices**
+
+#### **1. CS-SCHOLAR-ORCHESTRATOR (The Core Engine)**
+
+* **Operational Mandate:** Acts as the master telemetry clearinghouse and asynchronous event loop controller. It intercepts file modifications, standard output updates, and UI events, distilling them into a single, high-fidelity context packet for the downstream agents.
+* **Input Streams:** Native Tauri file system mutations, terminal buffer dumps, active viewport state metrics.
+* **Output Channels:** Context payloads routed to sub-agents; real-time JSON event streams to the React frontend view layer.
+
+#### **2. CS-SCHOLAR-MANIFEST (The Boundary Guardrail)**
+
+* **Operational Mandate:** Enforces syllabus compliance and logical constraints based on the active module file (e.g., `cs50x.json`, `cs50p.json`). It strictly dictates what programming syntax the student is *allowed* to use depending on their current lecture timeline.
+* **Input Streams:** Active course metadata tag, current target assignment file path.
+* **Output Channels:** Algorithmic limitation constraints (e.g., "Ban all array use; force pointer arithmetic only").
+
+#### **3. CS-SCHOLAR-TELEMETRY (The Compiler and AST Watcher)**
+
+* **Operational Mandate:** Performs headless static analysis on code alterations and intercepts terminal errors (`stderr`). It reads compilation output blocks to precisely map faults to raw code lines without executing user software in an unsafe sandbox.
+* **Input Streams:** Raw workspace source files (`.c`, `.py`, `.sql`), `xterm.js` console output streams.
+* **Output Channels:** Structural execution fault vectors containing precise line number, error code, and failure type.
+
+#### **4. CS-SCHOLAR-SOCRATIC (The Brain)**
+
+* **Operational Mandate:** Executes the pedagogical interface logic. It is **fundamentally prohibited** from writing code blocks, providing explicit patch syntaxes, or giving binary answers. It guides absolute beginners to discover structural computer science theory via logical deduction loops.
+* **Input Streams:** Compiled state payload from Orchestrator containing: `Telemetry Fault Vector` + `Active Manifest Block` + `User-written Note Snippet`.
+* **Output Channels:** Markdown-formatted Socratic prompts, conceptual tracing challenges, and inline hint injections.
+
+#### **5. CS-SCHOLAR-PASSPORT (The Git-Sync Onboarding Officer)**
+
+* **Operational Mandate:** Monitors local developer environment parameters and provides handheld, non-technical git and GitHub onboarding logic for absolute beginners.
+* **Input Streams:** Native shell execution checks (`git --version`, `ssh -T git@github.com`).
+* **Output Channels:** Step-by-step Markdown setup guides, automated repository provisioning configurations, and local-to-cloud sync status logs.
+
+---
+
+## **III. Data Fabric: The Markdown State Schema**
+
+The agent network reads and writes internal state tracking data directly inside the flat file system using strict Markdown YAML Frontmatter. This ensures that the user's data remains local, portable, and immune to file corruption.
+
+### **3.1 Lecture Note Configuration Schema (`01-Lectures/`)**
+
+```markdown
+---
+course_id: "cs50x-2026"
+week: 2
+topic: "Arrays & Memory"
+status: "active"
+metrics:
+  concepts_tracked: ["strings", "null-terminator", "ascii"]
+  socratic_depth: 4
+last_agent_sync: 2026-05-23T07:32:00Z
+---
+# Lecture 2 Notes
+... User notes go here ...
+
+%%
+## 🤖 Agent Socratic Ledger
+- timestamp: 2026-05-23T07:32:15Z
+  agent_id: "cs-scholar-socratic"
+  context_trigger: "User confused assignment (=) with equality (==) on line 14"
+  prompt_vector: "Look closely at your assignment logic on line 14. If a single sign transfers value, how do we evaluate a statement of truth?"
+%%
+
+```
+
+### **3.2 Assessment and Testing Schema (`03-Assessments/`)**
+
+```markdown
+---
+type: "homework"
+manifest_ref: "cs50x-w2-pset"
+target_file: "caesar.c"
+status: "awaiting-evaluation"
+grades:
+  conceptual_score: null
+  style_score: null
+  compilation_passed: false
+---
+# Assignment: Tracing Array Indices
+... Code exercises generated by agent ...
+
+```
+
+---
+
+## **IV. Computational Interaction & Socratic Logic Models**
+
+To ensure the agent behaves like an elite academic mentor rather than a simple wrapper, it uses a multi-layered mathematical filtering loop before generating an inference token block.
+
+Let $E_c$ represent the structural error context parsed from terminal telemetry, $M_w$ represent the technical constraints dictated by the active week's syllabus manifest, and $S_n$ represent the raw text string of the student's personal study notes.
+
+The Socratic Hint Generation Engine can be modeled as a strict transformation pipeline:
+
+$$f_{socratic}(E_c, M_w, S_n) \rightarrow H_{hint}$$
+
+Where the generated output space $H_{hint}$ must adhere to the following absolute semantic constraints:
+
+$$H_{hint} \cap \{ \text{Explicit Code Codeblocks}, \text{Direct Syntax Corrections}, \text{Copy-Paste Snippets} \} = \emptyset$$
+
+If the inference engine outputs even a single token containing code execution mutations or patch code blocks, the **Rust Core Execution Layer** intercepts the stream, discards the token payload, and triggers an immediate local recursion fallback protocol.
+
+---
+
+## **V. Open-Source Git-Sync Integration Pipeline**
+
+The `CS-SCHOLAR-PASSPORT` agent enforces a zero-friction path to environment authorization. It maps environment parameters into user-friendly diagnostic paths.
+
+```
+                  ┌──────────────────────────────┐
+                  │   Initialization Sequence    │
+                  └──────────────┬───────────────┘
+                                 ▼
+               /───────────────────────────────────\
+              <  Is Git installed and configured?   >
+               \───────────────────────────────────/
+                        /                 \
+                No     /                   \   Yes
+                      ▼                     ▼
+┌──────────────────────────────┐   /───────────────────────────────────\
+│  Spawn: Welcome-Passport.md  │  <  Is local repo linked to GitHub?   >
+│  Step-by-Step Native Guide   │   \───────────────────────────────────/
+└──────────────┬───────────────┘            /                 \
+               │                    No     /                   \   Yes
+               ▼                          ▼                     ▼
+┌──────────────────────────────┐ ┌──────────────────┐ ┌──────────────────┐
+│ Inject Interactive SSH Keys  │ │ Initialize OAuth │ │ Engage Silent    │
+│ & Environment Path Variables │ │ Desktop Handshake│ │ Background Sync  │
+└──────────────────────────────┘ └──────────────────┘ └──────────────────┘
+
+```
+
+1. **Environment Interception:** If system environment tools are missing, the agent halts command-line execution and writes an explicit configuration notebook directly into the CodeMirror portal view.
+2. **Concept Translation Layer:** Terms such as `git push` are automatically converted within the interface into **"Lock Progress to Time Machine"** to bypass setup anxiety for newcomers.
+3. **Automated Workspace Hardening:** The agent creates standard, clean `.gitignore` modules locally before pushing files, ensuring the user's secure environment markers never leak onto the public internet.
+
+---
+
+## **VI. Anti-Gravity 2.0 Ingestion Confirmation**
+
+This specification represents the complete, immutable state map of `Calyx Scholar`. The `antigravity 2.0` engine is now instructed to hold these specific component guidelines, agent profiles, and file schemas in its active operational memory. No code generation or framework file creation is authorized until these structural layers are fully integrated into your terminal engine state.
+
+**THE BLUEPRINT IS LOCKED. STAND BY FOR COMPONENT EMISSION DIRECTIVES.**
