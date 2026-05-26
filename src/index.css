@@ -5,25 +5,31 @@
   --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Low-saturation monochrome and tactical color tokens */
-  --bg-black: #050505;
-  --bg-darker: #0a0a0a;
-  --bg-card: #0f0f11;
-  --border-slate: #1e293b;
-  --border-muted: #2d3748;
+  /* Calyx Standard Slate & Gold luxury color tokens */
+  --bg-black: #0a0a12;
+  --bg-darker: #050507;
+  --bg-card: rgba(16, 16, 24, 0.45);
+  
+  --border-slate: rgba(30, 41, 59, 0.2);
+  --border-amber-tactical: rgba(245, 158, 11, 0.08);
+  --border-amber-active: rgba(245, 158, 11, 0.25);
   
   --text-slate: #64748b;
   --text-muted: #94a3b8;
   --text-primary: #f8fafc;
   
-  /* Tactical Highlights */
+  /* High-contrast Highlight Accents */
+  --tactical-amber: #f59e0b;
   --keyword-amber: #d97706;
-  --keyword-amber-glow: rgba(217, 119, 6, 0.15);
+  --keyword-amber-glow: rgba(217, 119, 6, 0.12);
   
   --error-neon: #ef4444;
-  --error-neon-glow: rgba(239, 68, 68, 0.25);
+  --error-neon-glow: rgba(239, 68, 68, 0.2);
   
-  --kinetic-transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --accent-green: #10b981;
+  --accent-green-glow: rgba(16, 185, 129, 0.2);
+
+  --kinetic-transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 body {
@@ -37,62 +43,64 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom global overrides for styling */
+/* Monospace alignment classes */
 .font-mono {
   font-family: var(--font-mono) !important;
 }
 
-/* Scrollbar kinetics */
+/* Custom scrollbar kinetics */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-black);
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--border-slate);
-  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-slate);
+  background: rgba(245, 158, 11, 0.2);
 }
 
-/* CRT glowing overlay scanline */
-.crt-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-  background-size: 100% 4px, 6px 100%;
-  z-index: 10;
-  pointer-events: none;
-}
-
-/* Glassmorphism containers */
-.glass-panel {
-  background: rgba(10, 10, 10, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border-slate);
+/* Glassmorphism Panel Architecture */
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border-amber-tactical);
+  border-radius: 1rem; /* rounded-2xl */
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.03), 0 8px 32px 0 rgba(0, 0, 0, 0.4);
   transition: var(--kinetic-transition);
-}
-.glass-panel:hover {
-  border-color: var(--text-slate);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Micro-animations */
+.glass-card:hover, .glass-card.active-panel {
+  border-color: var(--border-amber-active);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.05), 0 8px 36px 0 rgba(245, 158, 11, 0.05), 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Kinetic Pulse Animations */
 @keyframes pulse-glowing {
   0%, 100% {
-    opacity: 0.8;
+    opacity: 0.85;
     transform: scale(1);
   }
   50% {
-    opacity: 0.3;
-    transform: scale(0.96);
+    opacity: 0.35;
+    transform: scale(0.92);
+  }
+}
+
+@keyframes scanline-crawl {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
   }
 }
 
@@ -104,14 +112,19 @@ body {
   animation: pulse-glowing 2s infinite ease-in-out;
 }
 
-.glowing-indicator.red {
-  background-color: var(--error-neon);
-  box-shadow: 0 0 8px var(--error-neon);
+.glowing-indicator.green {
+  background-color: var(--accent-green);
+  box-shadow: 0 0 8px var(--accent-green);
 }
 
 .glowing-indicator.amber {
-  background-color: var(--keyword-amber);
-  box-shadow: 0 0 8px var(--keyword-amber);
+  background-color: var(--tactical-amber);
+  box-shadow: 0 0 8px var(--tactical-amber);
+}
+
+.glowing-indicator.red {
+  background-color: var(--error-neon);
+  box-shadow: 0 0 8px var(--error-neon);
 }
 
 .glowing-indicator.slate {
@@ -119,15 +132,15 @@ body {
   box-shadow: 0 0 8px var(--text-slate);
 }
 
-/* CodeMirror 6 Custom Low-Saturation Tactical Theme */
+/* CodeMirror 6 Custom Overrides for Tactical Frame */
 .cm-editor {
-  background-color: var(--bg-black) !important;
+  background-color: transparent !important;
   color: var(--text-muted) !important;
   height: 100% !important;
 }
 
 .cm-gutters {
-  background-color: var(--bg-darker) !important;
+  background-color: rgba(5, 5, 7, 0.5) !important;
   border-right: 1px solid var(--border-slate) !important;
   color: var(--text-slate) !important;
   font-family: var(--font-mono) !important;
@@ -136,19 +149,26 @@ body {
 .cm-content {
   font-family: var(--font-mono) !important;
   font-size: 13px !important;
+  padding: 10px 0 !important;
 }
 
-/* Monochrome Code Styling Highlight Overrides */
+.cm-activeLine {
+  background-color: rgba(245, 158, 11, 0.02) !important;
+}
+.cm-activeLineGutter {
+  background-color: rgba(245, 158, 11, 0.06) !important;
+  color: var(--tactical-amber) !important;
+}
+
 .cm-error-underline {
   border-bottom: 2px wavy var(--error-neon) !important;
   background-color: var(--error-neon-glow) !important;
 }
 
-/* Tactical highlight categories override inside editor */
 .cm-keyword {
   color: var(--keyword-amber) !important;
   background-color: var(--keyword-amber-glow) !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
 }
 
 .cm-variableName, .cm-variableName2 {
@@ -164,16 +184,6 @@ body {
   color: var(--text-muted) !important;
 }
 
-/* Active statements / Cursor line highlighting */
-.cm-activeLine {
-  background-color: rgba(255, 255, 255, 0.02) !important;
-}
-.cm-activeLineGutter {
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  color: var(--text-primary) !important;
-}
-
-/* Custom error gutter styling */
 .cm-error-gutter-marker {
   color: var(--error-neon) !important;
   text-shadow: 0 0 6px var(--error-neon);

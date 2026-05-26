@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "2.0.0",
+  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "productName": "Calyx Scholar",
   "version": "0.1.0",
   "identifier": "com.calyx.scholar",
@@ -12,6 +12,7 @@
   "app": {
     "windows": [
       {
+        "label": "main",
         "title": "Calyx Scholar",
         "width": 1280,
         "height": 720,

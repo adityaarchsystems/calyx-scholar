@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Editor } from './components/Editor';
 import { Terminal } from './components/Terminal';
 import { Chat } from './components/Chat';
+import { WorkspaceExplorer } from './components/WorkspaceExplorer';
 import { useTauriIPC } from './hooks/useTauriIPC';
 import { useWorkspaceStore } from './store/workspaceStore';
 
@@ -9,9 +10,6 @@ const App: React.FC = () => {
   // Initialize type-safe Tauri listeners and global background channel events
   useTauriIPC();
 
-  const fileList = useWorkspaceStore((state) => state.fileList);
-  const activeFile = useWorkspaceStore((state) => state.activeFile);
-  const setActiveFile = useWorkspaceStore((state) => state.setActiveFile);
   const initializeWorkspace = useWorkspaceStore((state) => state.initializeWorkspace);
 
   useEffect(() => {
@@ -19,46 +17,26 @@ const App: React.FC = () => {
   }, [initializeWorkspace]);
 
   return (
-    <div className="w-screen h-screen flex bg-neutral-950 overflow-hidden font-mono text-sm antialiased text-neutral-200 select-none">
-      {/* Minimalist Sidebar File Explorer */}
-      <div className="w-52 border-r border-neutral-800 bg-[#070707] flex flex-col h-full shrink-0">
-        <div className="p-3 text-xs font-semibold text-neutral-400 border-b border-neutral-800 uppercase tracking-wider">
-          Workspace Explorer
-        </div>
-        <div className="flex-1 overflow-y-auto p-2 space-y-1">
-          {fileList.map((file) => {
-            const isSelected = activeFile === file;
-            const displayName = file.split('/').pop() || file;
-            return (
-              <button
-                key={file}
-                onClick={() => setActiveFile(file)}
-                className={`w-full text-left px-2.5 py-2 rounded text-xs font-mono truncate transition-all duration-200 block ${
-                  isSelected
-                    ? 'bg-neutral-900 text-slate-100 border-l-2 border-amber-600'
-                    : 'text-neutral-400 hover:text-neutral-200 hover:bg-neutral-950'
-                }`}
-              >
-                {displayName}
-              </button>
-            );
-          })}
-        </div>
+    <div 
+      aria-label="Calyx Scholar Workspace HUD"
+      className="w-screen h-screen min-h-screen max-h-screen overflow-hidden bg-[#0a0a12] p-4 gap-4 grid grid-cols-[280px_1fr_380px] grid-rows-[1fr_240px] font-sans antialiased text-slate-200 select-none"
+    >
+      {/* Column 1: Workspace Explorer and Industrial Telemetry (Spans both rows) */}
+      <WorkspaceExplorer />
+
+      {/* Column 2, Row 1: Core Viewport Editor (Aspect locked and min-width bounded) */}
+      <div className="col-start-2 row-start-1 min-w-0 relative overflow-hidden glass-card">
+        <Editor />
       </div>
 
-      {/* Main Grid Viewport */}
-      <div className="flex-1 grid grid-cols-2 h-full">
-        <div className="flex flex-col h-full border-r border-neutral-800">
-          <div className="flex-1 relative overflow-hidden">
-            <Editor />
-          </div>
-          <div className="h-1/3 relative border-t border-neutral-800">
-            <Terminal />
-          </div>
-        </div>
-        <div className="h-full relative">
-          <Chat />
-        </div>
+      {/* Column 2, Row 2: Terminal Sub-Shell (Locked at absolute height boundary) */}
+      <div className="col-start-2 row-start-2 min-w-0 relative overflow-hidden glass-card">
+        <Terminal />
+      </div>
+
+      {/* Column 3: Socratic Interaction Stream (Spans both rows, aspect locked at 380px) */}
+      <div className="col-start-3 row-start-1 row-span-2 min-w-0 relative overflow-hidden glass-card">
+        <Chat />
       </div>
     </div>
   );

@@ -1,0 +1,29 @@
+[[permission]]
+identifier = "allow-spawn-pty"
+description = "Allows spawning a PTY shell session"
+commands.allow = ["spawn_pty"]
+
+[[permission]]
+identifier = "allow-resize-pty"
+description = "Allows resizing the active PTY shell window"
+commands.allow = ["resize_pty"]
+
+[[permission]]
+identifier = "allow-write-to-pty"
+description = "Allows writing user key and shell inputs to PTY stdin"
+commands.allow = ["write_to_pty"]
+
+[[permission]]
+identifier = "allow-load-file-content"
+description = "Allows loading workspace note/code file contents asynchronously"
+commands.allow = ["load_file_content"]
+
+[[permission]]
+identifier = "allow-save-file-content"
+description = "Allows saving active note/code workspace updates to disk"
+commands.allow = ["save_file_content"]
+
+[[permission]]
+identifier = "allow-get-workspace-files"
+description = "Allows enumerating all workspace note and assessment files"
+commands.allow = ["get_workspace_files"]

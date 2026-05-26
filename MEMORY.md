@@ -19,6 +19,7 @@
 * **Out-of-Order AST Marks**: Refactored raw decoration array loops to `RangeSetBuilder` to optimize marker mapping during concurrent typing transaction cascades.
 * **PowerShell Spawn Blocked**: Handled Windows administrative policy Process creation blocks by displaying a gorgeous monochrome onboarding instructions view.
 * **Empty Editor on Startup**: Mapped workspaceStore setActiveFile and initializeWorkspace actions to load note/code contents, resolving cold-start editor hydration defects.
+* **Tauri v2 schemaVersion Block**: Purged invalid `schemaVersion` parameter and injected standard `$schema` path for schema compliance and IDE support, resolving immediate CLI launch blocks.
 
 ## 🏆 Resolved Milestones
 * **Phase 1 (Frontend Scaffolding)**: Completed Vite, React 19, and Tailwind v4 workspace build layouts.
@@ -27,3 +28,5 @@
 * **Phase 4 (Checking & Verification)**: Passed master `checklist.py` with 100% success scores.
 * **Phase 5 (Multi-Agent Swarm Optimization)**: Swapped all synchronous file ingestions to non-blocking async, resolved import order anomalies, added dynamic cold-start sidebar explorer panels, and integrated `RangeSetBuilder` and `LinesCodec` event decoding pipelines.
 * **Phase 6 (Engine Convergence & Production Swarm)**: Engineered the dynamic stack-allocated 256-byte guardrail circular buffer, implemented real-time reqwest client Ollama streaming with a robust simulated local character fallback loop, configured execution bypass policy parameters for PowerShell, and injected active content hydration hooks. Passed all 6 verification checks of the master checklist suite successfully.
+* **Phase 7 (Tauri v2 Schema & Capabilities Migration)**: Cleared strict schema validation failures by purging `schemaVersion`, establishing valid local `$schema` references, and compiling custom IPC permissions (`load_file_content`, `save_file_content`, `spawn_pty`, `resize_pty`, `write_to_pty`, `get_workspace_files`) in the newly registered capability manifest.
+* **Phase 8 (High-Fidelity UI/UX Industrial Overhaul)**: Overhauled the entire React view layout to conform with the Calyx Standard, including viewport-locked 100vh grids, browser-safe mock diagnostic streams in PTY Terminal, sandbox regex AST compilation filters in CodeMirror, and scrolling transaction logging streams in Chat.
